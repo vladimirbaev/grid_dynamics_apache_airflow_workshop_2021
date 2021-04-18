@@ -1,4 +1,4 @@
-# PiterPy 2020 Apache Airflow Workshop
+# Grid Dynamics Apache Airflow Workshop 2021
 
 ## Overview
 This repository contains Airflow infrastructure setup scripts and example of simple DAG.  
