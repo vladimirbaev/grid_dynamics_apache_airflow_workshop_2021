@@ -33,7 +33,7 @@ pip3 install -r requirements-dev.txt
 2. Create your own [Telegram Bot](https://core.telegram.org/bots#6-botfather)
 
 ## Resources
-* [Slides](https://github.com/vladimirbaev/grid_dynamics_apache_airflow_workshop_2021/blob/master/slides/GD%20Airflow%20Workshop%202021.pdf)
+* [Slides](https://github.com/vladimirbaev/grid_dynamics_apache_airflow_workshop_2021/blob/master/slides/%5BYellow%5D%20GD%20Airflow%20Workshop%202021%20.pdf)
 * [Apache Airflow documentation](https://airflow.apache.org/docs/stable/)
 
 ## Contacts
