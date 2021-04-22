@@ -11,6 +11,10 @@ services:
       POSTGRES_DB: airflow
       POSTGRES_PASSWORD: airflow
       PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "airflow" ]
+      interval: 5s
+      retries: 5
     ports:
       - 5432:5432
     volumes:
@@ -31,8 +35,33 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 30s
+      retries: 50
     ports:
       - 6379:6379
+    networks:
+      - airflow
+
+  initdb:
+    build:
+      context: .
+    image: airflow:latest
+    env_file:
+      - .env
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./files:/opt/airflow/files
+      - ./extra:/opt/extra
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /bin/bash
+    command: -c "airflow initdb"
+    depends_on:
+      redis: { condition: service_healthy }
+      postgres: { condition: service_healthy }
     networks:
       - airflow
 
@@ -51,8 +80,7 @@ services:
       - ./extra:/opt/extra
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - postgres
-      - redis
+      - initdb
     command: webserver
     healthcheck:
       test: ["CMD-SHELL", "[ -f /opt/airflow/airflow-webserver.pid ]"]
@@ -75,6 +103,8 @@ services:
       - ./extra:/opt/extra
       - /var/run/docker.sock:/var/run/docker.sock
     command: scheduler
+    depends_on:
+      - initdb
     networks:
       - airflow
 
@@ -93,25 +123,5 @@ services:
     command: worker
     depends_on:
       - scheduler
-    networks:
-      - airflow
-
-  initdb:
-    build:
-      context: .
-    image: airflow:latest
-    env_file:
-      - .env
-    volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./files:/opt/airflow/files
-      - ./extra:/opt/extra
-      - /var/run/docker.sock:/var/run/docker.sock
-    entrypoint: /bin/bash
-    command: -c "airflow initdb"
-    depends_on:
-      - redis
-      - postgres
     networks:
       - airflow

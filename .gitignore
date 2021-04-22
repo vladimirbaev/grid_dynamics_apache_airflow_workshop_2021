@@ -1,0 +1,13 @@
+.idea/
+*__pycache__/
+*.pytest_cache/
+*.pyc
+
+venv/
+airflow-workshop-env/
+
+database/
+files/
+logs/
+files/
+
