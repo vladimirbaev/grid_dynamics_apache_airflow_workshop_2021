@@ -37,7 +37,7 @@ pip3 install -r requirements-dev.txt
 * [Apache Airflow documentation](https://airflow.apache.org/docs/stable/)
 
 ## Contacts
-Join our [Telegram Group](https://t.me/gd_airflow_workshop_2021) to receive pipeline's notifications
+Join our [Telegram Group](https://t.me/gd_airflow_workshop) to receive pipeline's notifications
 
 ## For Ubuntu Users
 Possible, that at the start you will got an error:
